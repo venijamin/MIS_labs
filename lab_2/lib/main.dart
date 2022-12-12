@@ -1,19 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:lab2/answer.dart';
+
+import 'question.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  var questionIndex = 0;
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var _questionIndex = 0;
+
   var questions = [
-    'question1',
-    'question2',
+    {
+      'question': 'Select shirt type',
+      'answer': [
+        'T-shirt',
+        'Long sleeves',
+        'Sleeveless',
+        'Turtleneck',
+      ]
+    },
+    {
+      'question': 'Select sock type',
+      'answer': [
+        'Normal',
+        'Long',
+        'Short',
+        'None',
+      ]
+    },
+    {
+      'question': 'Select shoe type',
+      'answer': [
+        'Dress',
+        'Running',
+        'Sneakers',
+        'Flip flops',
+        'Crocs',
+        'Sandals',
+      ]
+    },
+    {
+      'question': 'Select pants type',
+      'answer': [
+        'Pantaloons',
+        'Trousers',
+        'None',
+      ]
+    },
   ];
 
-  void buttonPressed() {
-    questionIndex++;
-    print('tapped ' + questionIndex.toString());
+  void _buttonPressed() {
+    setState(() {
+      _questionIndex += 1;
+    });
+    print('tapped ' + _questionIndex.toString());
   }
 
   @override
@@ -25,10 +71,11 @@ class MyApp extends StatelessWidget {
             title: Text('Hello world'),
           ),
           body: Column(children: [
-            Text(questions[questionIndex]),
-            ElevatedButton(onPressed: buttonPressed, child: Text('button1')),
-            ElevatedButton(onPressed: buttonPressed, child: Text('button2')),
-            ElevatedButton(onPressed: buttonPressed, child: Text('button3')),
+            Question(text: questions[_questionIndex]['question'].toString()),
+            ...(questions[_questionIndex]['answer'] as List<String>)
+                .map((answer) {
+              return Answer(pressed: _buttonPressed, text: answer);
+            }),
           ]),
         ));
   }
