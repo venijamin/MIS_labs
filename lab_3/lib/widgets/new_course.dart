@@ -81,7 +81,6 @@ class _NewCourseState extends State<NewCourse> {
                         icon: Icon(
                           Icons.calendar_month,
                           color: Colors.white,
-                          size: 30,
                         ),
                       ),
                     ),
