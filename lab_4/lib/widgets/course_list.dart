@@ -12,33 +12,39 @@ class CourseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: courses.map((course) {
-        return Container(
-          width: double.infinity,
-          margin: EdgeInsets.fromLTRB(10, 15, 10, 0),
-          height: 100,
-          child: Card(
-            elevation: 5,
-            child: Column(children: [
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  course.title,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Expanded(
+      child: ListView(
+        children: [
+          Column(
+            children: courses.map((course) {
+              return Container(
+                width: double.infinity,
+                margin: EdgeInsets.fromLTRB(10, 15, 10, 0),
+                height: 100,
+                child: Card(
+                  elevation: 5,
+                  child: Column(children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        course.title,
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      DateFormat().format(course.date),
+                      style: TextStyle(color: Colors.black45),
+                    )
+                  ]),
                 ),
-              ),
-              Text(
-                DateFormat().format(course.date),
-                style: TextStyle(color: Colors.black45),
-              )
-            ]),
-          ),
-        );
-      }).toList(),
+              );
+            }).toList(),
+          )
+        ],
+      ),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lab_3/widgets/calendar.dart';
 import 'package:lab_3/widgets/course_list.dart';
 import 'package:lab_3/widgets/new_course.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import 'models/course.dart';
 
@@ -61,9 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: ListView(children: [
-        CourseList(_userCourses),
-      ]),
+      body: Column(
+        children: [
+          Calendar(),
+          CourseList(_userCourses),
+        ],
+      ),
     );
   }
 }

@@ -89,7 +89,8 @@ class _NewCourseState extends State<NewCourse> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  if (date != DateTime.now() && !titleController.text.isEmpty) {
+                  if (!date.isBefore(DateTime.now()) &&
+                      !titleController.text.isEmpty) {
                     widget.addNewCourse(titleController.text, date);
                     titleController.clear();
                     textDate = 'Select a date:';
