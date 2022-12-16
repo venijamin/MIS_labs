@@ -32,13 +32,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final titleController = TextEditingController();
 
-  final List<Course> _userCourses = [];
+  final Map<DateTime, List<Course>> _mapUserCourses = {};
 
   void _addNewCourse(String title, DateTime date) {
     final newCourse = Course(title: title, date: date);
+    final DateTime mapDate = DateTime(date.year, date.month, date.day);
 
     setState(() {
-      _userCourses.add(newCourse);
+      List<Course> list = _mapUserCourses[mapDate] ?? [];
+      if (!list.contains(newCourse)) {
+        list.add(newCourse);
+      }
+      _mapUserCourses[mapDate] = list;
+      print(_mapUserCourses.entries);
+      print(list.last);
     });
   }
 
@@ -48,6 +55,14 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (_) {
           return NewCourse(_addNewCourse);
         });
+  }
+
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  List<Course> _getEventsForDay(DateTime day) {
+    DateTime mapDate = DateTime(day.year, day.month, day.day);
+    return _mapUserCourses[mapDate] ?? [];
   }
 
   @override
@@ -65,8 +80,34 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
-          Calendar(),
-          CourseList(_userCourses),
+          Card(
+            margin: EdgeInsets.all(15),
+            elevation: 5,
+            child: TableCalendar(
+              focusedDay: _focusedDay,
+              firstDay: DateTime.now(),
+              lastDay: DateTime.utc(2100, 12, 31),
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: ((selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                });
+              }),
+              eventLoader: ((day) {
+                return _getEventsForDay(day);
+              }),
+              calendarFormat: _calendarFormat,
+              onFormatChanged: (format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              },
+            ),
+          ),
+          CourseList(_getEventsForDay(_focusedDay)),
         ],
       ),
     );
