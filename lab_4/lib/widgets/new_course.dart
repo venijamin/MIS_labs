@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lab_3/widgets/utils.dart';
 
 class NewCourse extends StatefulWidget {
   final Function addNewCourse;
@@ -95,6 +96,8 @@ class _NewCourseState extends State<NewCourse> {
                     titleController.clear();
                     textDate = 'Select a date:';
                     date = DateTime(0);
+                    Navigator.pop(context);
+                    Utils.showSnackBar('Event created!');
                   }
                 },
                 child: Text('Ok'),

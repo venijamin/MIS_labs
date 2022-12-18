@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../../main.dart';
-import 'utils.dart';
+import '../utils.dart';
 
 class SignUp extends StatefulWidget {
   final Function() onClickedSignIn;
