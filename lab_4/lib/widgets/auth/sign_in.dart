@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:lab_3/widgets/auth/utils.dart';
+import 'package:lab_3/widgets/utils.dart';
 
 import '../../main.dart';
 import 'forgot_password.dart';
