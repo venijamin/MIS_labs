@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -5,9 +6,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:lab_3/widgets/course_list.dart';
 import 'package:lab_3/widgets/new_course.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../main.dart';
 import '../models/course.dart';
+import '../widgets/notif.dart';
+import '../widgets/utils.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -16,7 +20,24 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+Notif notif = Notif();
+
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    notif.initialiseNotifications();
+
+    uid = FirebaseAuth.instance.currentUser?.uid;
+    events.doc(uid).get().then((DocumentSnapshot doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      mapUserCourses = Utils.convertMap(data['events']);
+    }, onError: (e) => events.doc(uid).set({}));
+  }
+
+  String? uid = FirebaseAuth.instance.currentUser?.uid;
+
   final titleController = TextEditingController();
 
   void _addNewCourse(String title, DateTime date) {
@@ -24,12 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
     final DateTime mapDate = DateTime(date.year, date.month, date.day);
 
     setState(() {
-      String? uid = FirebaseAuth.instance.currentUser?.uid;
       List<Course> list = mapUserCourses[mapDate] ?? [];
       if (!list.contains(newCourse)) {
         list.add(newCourse);
       }
       mapUserCourses[mapDate] = list;
+      notif.sendScheduled('Course in 4 hours', title, date);
 
       // ?? Convert _mapUserCourses to a map <String, Map>, so it can be written to firestore
       Map<String, Map> tempMap = {};
