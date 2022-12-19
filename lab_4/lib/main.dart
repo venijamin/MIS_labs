@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lab_3/screens/home.dart';
+import 'package:lab_3/widgets/notif.dart';
+import 'package:lab_3/widgets/notif.dart';
 import 'package:lab_3/widgets/utils.dart';
 import 'package:lab_3/widgets/auth/user_auth_page.dart';
 import 'package:lab_3/widgets/calendar.dart';
@@ -10,13 +13,20 @@ import 'package:lab_3/widgets/auth/sign_in.dart';
 import 'package:lab_3/widgets/new_course.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 import 'models/course.dart';
 import 'screens/login.dart';
 
+CollectionReference events = FirebaseFirestore.instance.collection('events');
+Map<DateTime, List<Course>> mapUserCourses = {};
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  tz.initializeTimeZones();
 
   runApp(MyApp());
 }
@@ -25,9 +35,6 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
-
-Map<DateTime, List<Course>> mapUserCourses = {};
-CollectionReference events = FirebaseFirestore.instance.collection('events');
 
 // Checks if the document for saving the courses exists
 Future<bool> checkExist(String uid) async {

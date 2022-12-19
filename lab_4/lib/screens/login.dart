@@ -20,13 +20,6 @@ class LoginScreen extends StatelessWidget {
                 // Get the document if it exists,
                 // else create a new document
                 String? uid = FirebaseAuth.instance.currentUser?.uid;
-                events.doc(uid).get().then((DocumentSnapshot doc) {
-                  final data = doc.data() as Map<String, dynamic>;
-                  mapUserCourses = Utils.convertMap(data['events']);
-                }, onError: (e) => events.doc(uid).set({}));
-
-                print(mapUserCourses.entries.first);
-
                 uid = FirebaseAuth.instance.currentUser?.uid;
 
                 // If there is no document it creates one in the database for the account
