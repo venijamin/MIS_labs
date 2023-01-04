@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:lab_3/widgets/course_list.dart';
 import 'package:lab_3/widgets/new_course.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -40,8 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final titleController = TextEditingController();
 
-  void _addNewCourse(String title, DateTime date) {
-    final newCourse = Course(title: title, date: date);
+  void _addNewCourse(String title, DateTime date, LatLng? location) {
+    final newCourse = Course(title, date, location);
     final DateTime mapDate = DateTime(date.year, date.month, date.day);
 
     setState(() {

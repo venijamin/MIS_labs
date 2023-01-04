@@ -2,6 +2,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lab_3/widgets/map_utils.dart';
 
 import '../models/course.dart';
 
@@ -17,7 +18,18 @@ class CourseList extends StatelessWidget {
         children: [
           Column(
             children: courses.map((course) {
-              return Container(
+              return ElevatedButton(onPressed: () {
+                double lat = 0;
+                double lon = 0;
+                if(course.location?.longitude == null || course.location?.latitude == null) {
+                } else {
+                  lat = course.location!.latitude;
+                  lon = course.location!.longitude;
+                }
+                MapUtils.openMap(lat, lon);
+
+              },
+                child: Container(
                 width: double.infinity,
                 margin: EdgeInsets.fromLTRB(10, 15, 10, 0),
                 height: 100,
@@ -37,9 +49,13 @@ class CourseList extends StatelessWidget {
                     Text(
                       DateFormat().format(course.date),
                       style: TextStyle(color: Colors.black45),
+                    ),
+                    Text(
+                      course.location.toString(),
                     )
                   ]),
                 ),
+              ),
               );
             }).toList(),
           )

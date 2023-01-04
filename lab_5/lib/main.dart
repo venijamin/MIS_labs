@@ -11,6 +11,7 @@ import 'package:lab_3/widgets/calendar.dart';
 import 'package:lab_3/widgets/course_list.dart';
 import 'package:lab_3/widgets/auth/sign_in.dart';
 import 'package:lab_3/widgets/new_course.dart';
+import 'package:location/location.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -22,11 +23,15 @@ import 'screens/login.dart';
 
 CollectionReference events = FirebaseFirestore.instance.collection('events');
 Map<DateTime, List<Course>> mapUserCourses = {};
+Location location = new Location();
+
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   tz.initializeTimeZones();
+
+  location.hasPermission();
 
   runApp(MyApp());
 }
