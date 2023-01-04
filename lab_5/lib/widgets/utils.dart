@@ -23,8 +23,7 @@ class Utils {
       DateTime mapDate = DateTime.parse(key.toString());
       List<Course> list = [];
       for (String key2 in map[key].keys) {
-        Course course =
-            Course(title: key2, date: DateTime.parse(map[key][key2]));
+        Course course = Course(key2, DateTime.parse(map[key][key2]));
         list.add(course);
       }
 
